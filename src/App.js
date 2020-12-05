@@ -7,20 +7,20 @@ import Orders from './containers/Orders/Orders';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from './store/actions';
 
 class App extends Component {
   componentDidMount() {
-    this.props.onCheckAutoLogin();
+    this.props.onTryAutoSignUp();
   }
 
   render() {
 
     let routes = (
       <Switch>
-        <Route path='/auth' exact component={Auth} />
+        <Route path='/auth' component={Auth} />
         <Route path='/' exact component={BurgerBuilder} />
         <Redirect to='/' />
       </Switch>
@@ -30,8 +30,9 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path='/checkout' component={Checkout} />
-          <Route path='/orders' exact component={Orders} />
-          <Route path='/logout' exact component={Logout} />
+          <Route path='/orders' component={Orders} />
+          <Route path='/auth' component={Auth} />
+          <Route path='/logout' component={Logout} />
           <Route path='/' exact component={BurgerBuilder} />
           <Redirect to='/' />
         </Switch>
@@ -54,8 +55,8 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onCheckAutoLogin: () => dispatch(actions.authCheckState())
+    onTryAutoSignUp: () => dispatch(actions.authCheckState())
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
